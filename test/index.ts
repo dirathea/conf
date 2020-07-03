@@ -141,6 +141,30 @@ test('.reset()', t => {
 	t.is(t.context.configWithDefaults.get('bar'), 99);
 });
 
+test.only('schema with default but without defaults 🙃', t => {
+	const config = new Conf({
+		schema: {
+			foo: {
+				type: 'string',
+				default: 'hello'
+			},
+			bar: {
+				type: 'object',
+				properties: {
+					baz: {
+						type: 'string',
+						default: 'baz'
+					}
+				}
+			}
+		}
+	});
+
+	t.is(config.get('foo'), 'hello');
+	t.is(config.get('bar'), {baz: 'baz'});
+	t.is(config.get('bar.baz'), 'baz');
+});
+
 test('.delete()', t => {
 	const {config} = t.context;
 	config.set('foo', 'bar');
